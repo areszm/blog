@@ -1,0 +1,39 @@
+{% load staticfiles %}
+<html>
+    <head>
+        <title>list posts</title>
+        <link rel="stylesheet" href="{% static 'bootstrap-3.3.6-dist/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap-3.3.6-dist/css/bootstrap-theme.min.css' %}">
+        <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+        <!--
+        <link rel="stylesheet" type="text/css" href="uikit/css/uikit.gradient.min.css"/>
+        <script type="text/javascript" src="uikit/js/uikit.min.js"></script>
+-->
+    </head>
+    <body>
+        <div class="blog-masthead">
+          <div class="container">
+            <nav class="blog-nav">
+              <a class="blog-nav-item active" href="#">Home</a>
+              <a class="blog-nav-item" href="#">New features</a>
+              <a class="blog-nav-item" href="#">Press</a>
+              <a class="blog-nav-item" href="#">New hires</a>
+              <a class="blog-nav-item" href="#">Login</a>
+            </nav>
+          </div>
+        </div>
+        <div class="page-header">
+            <h1 class="blog-title">Przedszkole 32</h1>
+                <p class="lead blog-description">The official example template of creating a blog with Bootstrap.</p>
+        </div>
+        <div class="content container">
+            <div class="row">
+                <div class="col-md-8">
+                {% block content %}
+                {% endblock %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
