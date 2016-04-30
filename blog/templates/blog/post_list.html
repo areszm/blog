@@ -1,20 +1,23 @@
 <html>
     <head>
         <title>list posts</title>
+        <link rel="stylesheet" type="text/css" href="uikit/css/uikit.gradient.min.css"/>
+        <script type="text/javascript" src="uikit/js/uikit.min.js"></script>
     </head>
     <body>
-        <div>
-            <h1><a href="">Blog</a></h1>
-        </div>
-        <div>
-            <p>Opublikowany: 28.04.2016, 20:45</p>
-            <h2><a href="">Moj pierwszy post</a></h2>
-            <p>Tresc postu</p>
-        </div>
-        <div>
-            <p>Opublikowany: 27.04.2016, 18:45</p>
-            <h2><a href="">Moj pierwszy post test</a></h2>
-            <p>Tresc postu  brak</p>
+        <div class="uk-container uk-container-center uk-margin-top">
+            <div>
+                <h1><a href="">Blog</a></h1>
+            </div>
+            <div>
+                {% for post in posts %}
+                <div>
+                    <p>wysłany: {{ post.published_date }} </p>
+                    <h1><a href="">{{ post.title }}</a></h1>
+                    <p>{{ post.text|linebreaks }}</p>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </body>
 </html>
