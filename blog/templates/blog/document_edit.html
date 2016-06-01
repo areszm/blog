@@ -1,0 +1,10 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <form action="" method="post" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" name="send" class="save btn btn-default glyphicon glyphicon-saved"></button>
+        <button type="submit" name="cancel" class="save btn btn-default glyphicon glyphicon-remove"></button>
+    </form>
+{% endblock content %}

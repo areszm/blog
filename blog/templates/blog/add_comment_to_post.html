@@ -1,0 +1,12 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <h1>Nowy komentarz:</h1>
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" name="send" class="save btn btnc-default">Wyślij</button>
+        <button type="submit" name="draft" class="save btn btnc-default">Zapisz</button>
+        <button type="submit" name="cancel" class="save btn btnc-default">Anuluj</button>
+    </form>
+{% endblock content %}

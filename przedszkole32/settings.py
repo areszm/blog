@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 """
 Django settings for przedszkole32 project.
 
@@ -11,6 +13,10 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+# from django.core.urlresolvers import reverse_lazy
+
+#LOGIN_URL = reverse_lazy('login')
+#LOGIN_REDIRECT_URL = reverse_lazy('post_list')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -37,7 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+#    'django_modalview',
+    'jquery',
     'blog',
+    'cookielaw',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -56,7 +65,7 @@ ROOT_URLCONF = 'przedszkole32.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,7 +80,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'przedszkole32.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
@@ -79,7 +87,7 @@ DATABASES = {
     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'ENGINE': 'django.db.backends.mysql', 
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'przedszkole32',
         'USER': 'przedszkole32',
         'PASSWORD': 'Przedszkole32',
@@ -120,7 +128,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
@@ -128,4 +135,14 @@ STATIC_URL = os.path.join(BASE_DIR, "static/")
 STATIC_ROOT = os.path.join(BASE_DIR, 'public', 'static')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
+#    os.path.join(BASE_DIR, "public/static"),
 )
+# Absolute filesystem path to the directory that will hold user-uploaded files.
+# Example: "$project/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# URL that handles the media served from MEDIA_ROOT. Make sure to use a
+# trailing slash.
+# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
+MEDIA_URL = '/media/'
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+LOGIN_REDIRECT_URL = '/'

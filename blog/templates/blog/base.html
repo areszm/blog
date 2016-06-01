@@ -1,32 +1,131 @@
+<!DOCTYPE html>
 {% load staticfiles %}
-<html>
+{% load tags %}
+
+{% load cookielaw_tags %}
+{% cookielaw_banner %}
+
+<html lang="pl">
     <head>
-        <title>list posts</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}{% endblock %}</title>
         <link rel="stylesheet" href="{% static 'bootstrap-3.3.6-dist/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'bootstrap-3.3.6-dist/css/bootstrap-theme.min.css' %}">
         <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="{% static 'css/blog.css' %}">
-        <!--
+        <link rel="stylesheet" href="{% static 'jquery_lightbox/css/lightbox.css' %}"  />
+<!--
         <link rel="stylesheet" type="text/css" href="uikit/css/uikit.gradient.min.css"/>
         <script type="text/javascript" src="uikit/js/uikit.min.js"></script>
+        <script type="text/javascript" src="cookielaw/js/cookielaw.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+        <script type="text/javascript" src="{% static 'jquery/jquery.js' %}"></script>
 -->
+        {% block extrahead %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+        <script type="text/javascript" src="{% static 'cookielaw/js/cookielaw.js' %}"></script>
+        <script src="{% static 'jquery_lightbox/js/lightbox.js' %}"></script>
+        {% endblock %}
+
     </head>
     <body>
+        <header id="top" class="navbar navbar-static-top bs-docs-nav" role="banner">
         <div class="blog-masthead">
+<!--        {% block nav %} -->
           <div class="container">
             <nav class="blog-nav">
-              <a class="blog-nav-item active" href="#">Home</a>
-              <a class="blog-nav-item" href="#">New features</a>
-              <a class="blog-nav-item" href="#">Press</a>
-              <a class="blog-nav-item" href="#">New hires</a>
-              <a class="blog-nav-item" href="#">Login</a>
+              <!-- {% block nav-home %}
+<a class="blog-nav-item {% active request 'post_list' %}" href="/">Home</a>
+-->
+              <a class="blog-nav-item {% active request '^/$' %}" href="{% url 'post_list' %}"><span class="glyphicon glyphicon-home"></span> Przedszkole 32</a>
+        <!--        {% endblock %} -->
+                {% if user.is_authenticated %}
+              <a class="blog-nav-item {% active request 'new' %}" href="{% url 'post_new' %}">Nowy wpis</a>
+                {% endif %}
+                <a class="blog-nav-item {% active request 'zapisy' %}" href="{% url 'post_zapisy' %}">Zapisy</a>
+                <a class="blog-nav-item {% active request 'about' %}" href="{% url 'post_about' %}">Kontakt</a>
+                <a class="blog-nav-item" href="#">Jadłospis</a>
+                {% if user.is_authenticated %}
+                    {{ user.username }} <a href="{% url 'logout' %}?next_page={{request.path}}">Logout</a>
+                {% else %}
+                    <a class="blog-nav-item {% active request 'login' %}" href="{% url 'login' %}{% if request.GET %}?{{ request.GET.urlencode }}&next_page={{request.path}}{% else %}?next_page={{request.path}}{% endif %}">Login</a>
+                {% endif %}
             </nav>
           </div>
+        {% endblock %}
         </div>
+        </header>
+
+<div class="row" id="wrapper">
+
+  <div class="col-sm-1" id="sidebar-wrapper">
+
+      <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="#">Kierunek</a>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-brand"><a href="{% url 'post_list' %}"><span class="glyphicon glyphicon-arrow-up">Najnowsze</span>  </a></li>
+                    <li class="sidebar-brand"><a href="{% url 'post_list' %}"><span class="glyphicon glyphicon-arrow-down">Najstarsze</span></a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Grupy</a>
+                    <ul class="sidebar-nav">
+                    <li class="sidebar-brand"><a href="{% url 'post_list' %}{% if request.GET %}?{{ request.GET.urlencode }}&grupa=1{% else %}?grupa=1{% endif %}">1</a></li>
+                    <li class="sidebar-brand"><a href="{% url 'post_list' %}{% if request.GET %}?{{ request.GET.urlencode }}&grupa=2{% else %}?grupa=2{% endif %}">2</a></li>
+                    <li class="sidebar-brand"><a href="{% url 'post_list' %}?grupa=3">3</a></li>
+                    <li class="sidebar-brand"><a href="#">4</a></li>
+                    <li class="sidebar-brand"><a href="#">5</a></li>
+                </ul>
+            </li>
+        </ul>
+
+  </div>
+
+  <div class="col-sm-9" id="page-content-wrapper" >
+<!--
+      <div class="container bs-docs-container">
+    <div class="row">
+        <div class="col-md-9" role="main">
+-->
+        <div id="content" class="bs-docs-header" tabindex="-1">
+            <div class="container">
+
         <div class="page-header">
-            <h1 class="blog-title">Przedszkole 32</h1>
-                <p class="lead blog-description">The official example template of creating a blog with Bootstrap.</p>
+{% if user.is_authenticated %}
+            <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+            <a href="{% url 'post_draft_list' %}" class="top-menu"><span class="glyphicon glyphicon-edit"></span></a>
+{% endif %}
+            <!-- h1 class="blog-title">Przedszkole 32 w Rzeszowie</h1 -->
+            <img src="{% static 'blog/images/napis.png' %}"/>
         </div>
+        {% if messages %}
+            {% for message in messages %}
+        <div id="id_messages" class="alert alert-{% if message.tags == 'error' %}danger {% else %}{{ message.tags }} {% endif %} text-center">
+              <!-- a class="close" data-dismiss="alert">×</a -->
+              <button id="message-close" class="close" data-dismiss="alert">x</button>
+              <strong><span class="{% if message.tags == 'error' %} glyphicon glyphicon-exclamation-sign {% else %} glyphicon glyphicon-ok {% endif %}"></span>
+                    {{ message }}
+             </strong>
+        </div>
+            {% endfor %}
+        <script type="text/javascript">
+$(document).ready(function(){
+
+    $( "#id_messages" ).click(function() {
+        //  console.log("funkcja id_message 2");
+        $(this).fadeOut( "slow" );
+    });
+
+    (function(){
+        console.log("delay")
+        $( "#id_messages" ).delay(2000).fadeOut( "slow" );
+    })();
+});
+</script>
+        {% endif %}
         <div class="content container">
             <div class="row">
                 <div class="col-md-8">
@@ -35,5 +134,50 @@
                 </div>
             </div>
         </div>
+        <!--
+        <header id="header" role="banner">
+            <div class="info-block cookies" style="display: block;">
+<span class="text text-center">
+Strona wykorzystuje pliki cookies. Korzystanie z witryny bez zmiany ustawień przeglądarki oznacza, że będą one umieszczane na Twoim urządzeniu. Zobacz, jak możesz zmienić te ustawienia i uzyskaj dodatkowe informacje o
+<a href="/dodatkowe-informacje/pomoc/polityka-cookies.html">wykorzystaniu plików cookies</a>
+.
+<br>
+</span>
+<span class="close"></span>
+</div>
+        </header>
+-->
+                </div>
+            </div>
+        </div>
+ </div>
+<!--
+<div class="container sidebar-right">
+    <div role="main">
+        <div id="version-switcher">
+            <ul id="doc-languages" class="language-switcher">
+                <li class="other">
+                    <a href="#">fr</a>
+                </li>
+                <li class="current" title="Click on the links on the left to switch to another language."><a href="#">en</a></li>
+                    <span>Language:
+                        <strong>en</strong>
+                    </span>
+                </li>
+            </ul>
+            <ul id="doc-versions" class="version-switcher">
+                <li class="other">
+                    <a href="#">1.10</a>
+                </li>
+                <li class="current" title="This document describes Django 1.9. Click on the links on the left to see other versions.">
+                    <span>Documentation version:
+                        <strong>1.9</strong>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+-->
     </body>
 </html>

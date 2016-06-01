@@ -6,8 +6,71 @@
             <div class="date">
                 {{ post.published_date }}
             </div>
+        {% else %}
+            <a class="btn btn-default" href="{% url 'blog.views.post_publish' pk=post.pk %}">Publish</a>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+        <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
         {% endif %}
         <h1>{{ post.title }}</h1>
+        <div class="row">
+            <div class="image-row">
+    <div class="image-set">
+            {% for document in post.documents.all %}
+                {% if document.thumbnail %}
+                <div class="col-sm-8 col-md-4">
+                    <!-- p>{{document.docfile.url}}</p class="thumbnail" -->
+
+<a class="example-image-link thumbnail" data-title="Click the right half of the image to move forward." data-lightbox="example-set" href="{{document.docfile.url}}">
+<img class="example-image" alt="{{document.title}}" src="{{document.docfile.url}}">
+</a>
+
+<!--                    <a href="#" class="thumbnail"><img src="{{document.thumbnail.url}}" alt="{{document.title}}"></a> -->
+                    {% if user.is_authenticated %}
+                    <a class="btn btn-default" href="{% url 'document_remove' pk=document.pk %}" alt="usuń"><span class="glyphicon glyphicon-trash"></span></a>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class = "col-sm-8 col-md-4">
+                    <span class="glyphicon glyphicon-picture"></span>
+                    <a class="btn btn-default" href="{% url 'document_remove' pk=document.pk %}" alt="usuń"><span class="glyphicon glyphicon-trash"></span></a>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+                </div>
+            {% if user.is_authenticated %}
+                <a class="btn btn-default" href="{% url 'add_document_to_post' pk=post.pk %}"><span class="glyphicon glyphicon-camera"></span></a>
+            {% endif %}
+        </div>
         <p>{{ post.text|linebreaks }}</p>
+        <hr>
+        {% for comment in post.comments.all %}
+          {% if user.is_authenticated or comment.approved_comment %}
+          <div class="comment">
+            <div class="date">{{ comment.created_date }}
+                {% if user.is_authenticated and comment.author.id = user.id %}
+                {% if not comment.approved_comment %}
+                  <a class="btn btn-default" href="{% url 'comment_approve' pk=comment.pk %}"><span class="glyphicon glyphicon-ok"></span></a>
+                {% endif %}
+                <a class="btn btn-default" href="{% url 'comment_edit' pk=comment.pk %}"  alt="edytuj"><span class="glyphicon glyphicon-pencil"></span></a>
+                <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}" alt="usuń"><span class="glyphicon glyphicon-trash"></span></a>
+                {% endif %}
+            </div>
+            <strong>{{ comment.author }}</strong>
+            <p>{{ comment.text|linebreaks  }}</p>
+          {% endif %}
+        {% empty %}
+          <p><!-- No comments here yet. --></p>
+        {% endfor %}
+        {% if user.is_authenticated %}
+            <a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}"><span class="glyphicon glyphicon-comment"></span></a>
+            <!--
+              <form method="post" action="">
+                {{ formset }}
+            </form>
+            -->
+        {% endif %}
     </div>
 {% endblock content %}

@@ -1,0 +1,4 @@
+django-cookie-law
+MySQL-python
+PyMySQL
+Pillow

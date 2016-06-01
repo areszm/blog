@@ -1,0 +1,10 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ login }}{% endblock %}
+
+{% block head %}
+<title>Logout</title>
+{% endblock %}
+{% block body %}
+    <p>Zostales Wylogowany Zaloguj <a href="{% url 'login' %}">ponownie</a>.</p>
+{% endblock %}

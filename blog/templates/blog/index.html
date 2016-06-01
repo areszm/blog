@@ -1,0 +1,13 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ login }}{% endblock %}
+
+{% block content %}
+    {% if messages %}
+        <ul>
+            {% for komunikat in messages %}
+            <li>{{ komunikat|capfirst }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock content %}

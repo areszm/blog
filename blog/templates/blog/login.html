@@ -1,0 +1,36 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ login }}{% endblock %}
+
+{% block content %}
+    {% if not user.is_authenticated %}
+        <h1>Login:</h1>
+        <form action="./{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" method="post">
+<!--
+        {% if next_page %}
+          <form action="./?next_page={{next_page}}" method="post" >
+        {%else%}
+          <form action="." method="post" >
+        {% endif %}
+-->
+        <!-- form method="post" action="." -->
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>{{ form.username.label_tag }}</td>
+                    <td>{{ form.username }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.password.label_tag }}</td>
+                    <td>{{ form.password }}</td>
+                </tr>
+            </table>
+            <input type="submit" value="login" />
+        </form>
+    {% else %}
+      <p>Jesteś już zalogowany jako {{ user.username }}</p>
+      <ul>
+        <li><a href="{% url 'blog:post_detail' %}">Strona główna</a></li>
+      </ul>
+    {% endif %}
+{% endblock content %}
