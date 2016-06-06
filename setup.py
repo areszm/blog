@@ -2,7 +2,7 @@ from setuptools import setup
 import os
 
 # Put here required packages
-packages = ['Django<=1.9',]
+packages = ['Django>=1.9', 'MySQL-python', 'PyMySQL', 'Pillow']
 
 # This is if you like use redis cloud w/Django...
 if 'REDISCLOUD_URL' in os.environ and 'REDISCLOUD_PORT' in os.environ and 
