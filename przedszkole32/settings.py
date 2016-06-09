@@ -14,9 +14,39 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 # from django.core.urlresolvers import reverse_lazy
-
 #LOGIN_URL = reverse_lazy('login')
 #LOGIN_REDIRECT_URL = reverse_lazy('post_list')
+
+# a setting to determine whether we are running on OpenShift
+ON_OPENSHIFT = False
+if os.environ.has_key('OPENSHIFT_REPO_DIR'):
+    ON_OPENSHIFT = True
+if os.environ.has_key('OPENSHIFT_APP_NAME'):
+    DB_NAME = os.environ['OPENSHIFT_APP_NAME']
+if os.environ.has_key('OPENSHIFT_DB_USERNAME'):
+    DB_USER = os.environ['OPENSHIFT_DB_USERNAME']
+if os.environ.has_key('OPENSHIFT_DB_PASSWORD'):
+    DB_PASSWD = os.environ['OPENSHIFT_DB_PASSWORD']
+if os.environ.has_key('OPENSHIFT_DB_HOST'):
+    DB_HOST = os.environ['OPENSHIFT_DB_HOST']
+if os.environ.has_key('OPENSHIFT_DB_PORT'):
+    DB_PORT = os.environ['OPENSHIFT_DB_PORT']
+
+ON_BPI = False
+if os.environ.has_key('BPI_REPO_DIR'):
+    ON_OPENSHIFT = True
+if os.environ.has_key('BPI_APP_NAME'):
+    DB_NAME = os.environ['BPI_APP_NAME']
+if os.environ.has_key('BPI_DB_USERNAME'):
+    DB_USER = os.environ['BPI_DB_USERNAME']
+if os.environ.has_key('BPI_DB_PASSWORD'):
+    DB_PASSWD = os.environ['BPI_DB_PASSWORD']
+if os.environ.has_key('BPI_DB_HOST'):
+    DB_HOST = os.environ['BPI_DB_HOST']
+if os.environ.has_key('BPI_DB_PORT'):
+    DB_PORT = os.environ['BPI_DB_PORT']
+
+PROJECT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -83,16 +113,29 @@ WSGI_APPLICATION = 'przedszkole32.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if ON_OPENSHIFT or ON_BPION_BPI::
+    # os.environ['OPENSHIFT_DB_*'] variables can be used with databases created
+    # with rhc app cartridge add (see /README in this git repo)
+    DATABASES = {
+        'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'przedszkole32',
-        'USER': 'przedszkole32',
-        'PASSWORD': 'Przedszkole32',
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWD,
+        'HOST': DB_HOST,   # Or an IP Address that your DB is hosted on
+        'PORT': DB_PORT,
+    }
+else:
+    DATABASES = {
+        'default': {
+             'ENGINE': 'django.db.backends.sqlite3',
+             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'przedszkole32',
+#        'USER': 'przedszkole32',
+#        'PASSWORD': 'Przedszkole32',
+#        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+#        'PORT': '3306',
     }
 }
 
