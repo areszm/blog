@@ -113,7 +113,7 @@ WSGI_APPLICATION = 'przedszkole32.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-if ON_OPENSHIFT or ON_BPION_BPI::
+if ON_OPENSHIFT or ON_BPI:
     # os.environ['OPENSHIFT_DB_*'] variables can be used with databases created
     # with rhc app cartridge add (see /README in this git repo)
     DATABASES = {
@@ -124,6 +124,7 @@ if ON_OPENSHIFT or ON_BPION_BPI::
         'PASSWORD': DB_PASSWD,
         'HOST': DB_HOST,   # Or an IP Address that your DB is hosted on
         'PORT': DB_PORT,
+        }
     }
 else:
     DATABASES = {
@@ -136,8 +137,8 @@ else:
 #        'PASSWORD': 'Przedszkole32',
 #        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
 #        'PORT': '3306',
+        }
     }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
