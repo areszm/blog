@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-{% load staticfiles %}
+{% load static from staticfiles %}
 {% load tags %}
-
+<!--
 {% load cookielaw_tags %}
 {% cookielaw_banner %}
+-->
 
 <html lang="pl">
     <head>
@@ -11,11 +12,19 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}{% endblock %}</title>
+<!--
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+-->
+<!--      <link rel="stylesheet" href="{% static 'jquery_lightbox/css/lightbox.css' %}"  /> -->
         <link rel="stylesheet" href="{% static 'bootstrap-3.3.6-dist/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'bootstrap-3.3.6-dist/css/bootstrap-theme.min.css' %}">
+
         <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="{% static 'css/blog.css' %}">
-        <link rel="stylesheet" href="{% static 'jquery_lightbox/css/lightbox.css' %}"  />
+
 <!--
         <link rel="stylesheet" type="text/css" href="uikit/css/uikit.gradient.min.css"/>
         <script type="text/javascript" src="uikit/js/uikit.min.js"></script>
@@ -24,23 +33,33 @@
         <script type="text/javascript" src="{% static 'jquery/jquery.js' %}"></script>
 -->
         {% block extrahead %}
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-        <script type="text/javascript" src="{% static 'cookielaw/js/cookielaw.js' %}"></script>
-        <script src="{% static 'jquery_lightbox/js/lightbox.js' %}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"  type="text/javascript"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <!-- script type="text/javascript" src="{% static 'cookielaw/js/cookielaw.js' %}"></script -->
+        <!-- script src="{% static 'jquery_lightbox/js/lightbox.js' %}"></script -->
+<!--        <script src="{% static 'bootstrap-3.3.6-dist/js/bootstrap.min.js' %}" type="text/javascript"></script> -->
         {% endblock %}
+<script>
+$(document).ready( function() {
+  $('#pagination').dataTable( {
+    "oLanguage": {
+      "oPaginate": {
+        "sNext": "Następna",
+        "sFirst": "Pierwsza"
+      }
+    }
 
+  } );
+} );
+</script>
     </head>
     <body>
+<!--
         <header id="top" class="navbar navbar-static-top bs-docs-nav" role="banner">
         <div class="blog-masthead">
-<!--        {% block nav %} -->
           <div class="container">
             <nav class="blog-nav">
-              <!-- {% block nav-home %}
-<a class="blog-nav-item {% active request 'post_list' %}" href="/">Home</a>
--->
               <a class="blog-nav-item {% active request '^/$' %}" href="{% url 'post_list' %}"><span class="glyphicon glyphicon-home"></span> Przedszkole 32</a>
-        <!--        {% endblock %} -->
                 {% if user.is_authenticated %}
               <a class="blog-nav-item {% active request 'new' %}" href="{% url 'post_new' %}">Nowy wpis</a>
                 {% endif %}
@@ -54,10 +73,88 @@
                 {% endif %}
             </nav>
           </div>
-        {% endblock %}
         </div>
         </header>
+-->
+<div class="container">
 
+    <nav class="navbar navbar-inverse"> <!-- -->
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Przedszkole32</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a class="dropdown-toggle glyphicon glyphicon-th-list" data-toggle="dropdown" href="#"><span class="caret"></span> </a>
+          <ul class="dropdown-menu">
+            <li><a href="{% url 'post_list' %}">Dla wszystkich <span class="glyphicon glyphicon-ok"></span></a></li>
+            <li><a href="{% url 'post_list' %}{% if request.GET %}?{{ request.GET.urlencode }}&grupa=1{% else %}?grupa=1{% endif %}">Grupa 1</a></li>
+            <li><a href="{% url 'post_list' %}{% if request.GET %}?{{ request.GET.urlencode }}&grupa=2{% else %}?grupa=2{% endif %}">Grupa 2</a></li>
+            <li><a href="#">Grupa 3</a></li>
+            <li><a href="#">Grupa 4</a></li>
+            <li><a href="#">Grupa 5</a></li>
+          </ul>
+        </li>
+        <li class="{% active request '^/$' %}">
+          <a class="blog-nav-item " href="{% url 'post_list' %}"><span class="glyphicon glyphicon-home"></span></a>
+        </li>
+        {% if user.is_authenticated %}
+        <li><a class="blog-nav-item {% active request 'new' %}" href="{% url 'post_new' %}">Nowy wpis</a></li>
+        {% endif %}
+        <li><a class="blog-nav-item {% active request 'zapisy' %}" href="{% url 'post_zapisy' %}">Zapisy</a></li>
+        <li><a class="blog-nav-item {% active request 'about' %}" href="{% url 'post_about' %}">Kontakt</a></li>
+        <li><a class="blog-nav-item" href="#">Jadłospis</a></li>
+        <!--
+        <li class="dropdown">
+<a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 2 <span class="caret">
+</span></a>
+           <ul class="dropdown-menu">
+            <li><a href="#">Page 2-1</a></li>
+            <li><a href="#">Page 2-2</a></li>
+            <li><a href="#">Page 2-3</a></li>
+          </ul>
+</li> -->
+        <li><a href="#">Page 3</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+<!--        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li> -->
+        <li>
+          {% if user.is_authenticated %}
+              {{ user.username }} <a href="{% url 'logout' %}?next_page={{request.path}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+          {% else %}
+              <a href="{% url 'login' %}{% if request.GET %}?{{ request.GET.urlencode }}&next_page={{request.path}}{% else %}?next_page={{request.path}}{% endif %}"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+          {% endif %}
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <!--
+    <div class="bs-example">
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary">Button</button>
+            <button type="button" class="btn btn-primary">Another Button</button>
+            <div class="btn-group">
+                <button type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Dropdown <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+-->
+
+<!--
 <div class="row" id="wrapper">
 
   <div class="col-sm-1" id="sidebar-wrapper">
@@ -83,23 +180,24 @@
         </ul>
 
   </div>
+-->
+  <div class="col-sm-9" id="page-content-wrapper">
 
-  <div class="col-sm-9" id="page-content-wrapper" >
 <!--
       <div class="container bs-docs-container">
     <div class="row">
         <div class="col-md-9" role="main">
 -->
-        <div id="content" class="bs-docs-header" tabindex="-1">
-            <div class="container">
+        <!-- div id="content" class="bs-docs-header" tabindex="-1" -->
+            <!-- div class="container" -->
 
         <div class="page-header">
 {% if user.is_authenticated %}
             <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
             <a href="{% url 'post_draft_list' %}" class="top-menu"><span class="glyphicon glyphicon-edit"></span></a>
 {% endif %}
-            <!-- h1 class="blog-title">Przedszkole 32 w Rzeszowie</h1 -->
-            <img src="{% static 'blog/images/napis.png' %}"/>
+            <h1 class="blog-title">Przedszkole 32 w Rzeszowie</h1>
+<!--            <img src="{% static 'blog/images/napis.png' %}"/> -->
         </div>
         {% if messages %}
             {% for message in messages %}
@@ -147,37 +245,19 @@ Strona wykorzystuje pliki cookies. Korzystanie z witryny bez zmiany ustawień pr
 </div>
         </header>
 -->
-                </div>
-            </div>
+                <!-- /div -->
+            <!-- /div -->
         </div>
- </div>
-<!--
-<div class="container sidebar-right">
-    <div role="main">
-        <div id="version-switcher">
-            <ul id="doc-languages" class="language-switcher">
-                <li class="other">
-                    <a href="#">fr</a>
-                </li>
-                <li class="current" title="Click on the links on the left to switch to another language."><a href="#">en</a></li>
-                    <span>Language:
-                        <strong>en</strong>
-                    </span>
-                </li>
-            </ul>
-            <ul id="doc-versions" class="version-switcher">
-                <li class="other">
-                    <a href="#">1.10</a>
-                </li>
-                <li class="current" title="This document describes Django 1.9. Click on the links on the left to see other versions.">
-                    <span>Documentation version:
-                        <strong>1.9</strong>
-                    </span>
-                </li>
-            </ul>
-        </div>
-    </div>
 </div>
--->
+
+        <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        window.jQuery || document.write( '<script src="static/jquery/jquery.min.js"><\/script>' )
+    </script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="{% static 'assets/js/ie10-viewport-bug-workaround.js' %}"></script>
     </body>
 </html>

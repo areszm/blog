@@ -13,9 +13,10 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
-# from django.core.urlresolvers import reverse_lazy
-#LOGIN_URL = reverse_lazy('login')
-#LOGIN_REDIRECT_URL = reverse_lazy('post_list')
+PROJECT_DIR = os.path.dirname(os.path.realpath(__file__))
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # a setting to determine whether we are running on OpenShift
 ON_OPENSHIFT = False
@@ -34,7 +35,7 @@ if os.environ.has_key('OPENSHIFT_DB_PORT'):
 
 ON_BPI = False
 if os.environ.has_key('BPI_REPO_DIR'):
-    ON_OPENSHIFT = True
+    ON_BPI = True
 if os.environ.has_key('BPI_APP_NAME'):
     DB_NAME = os.environ['BPI_APP_NAME']
 if os.environ.has_key('BPI_DB_USERNAME'):
@@ -45,11 +46,6 @@ if os.environ.has_key('BPI_DB_HOST'):
     DB_HOST = os.environ['BPI_DB_HOST']
 if os.environ.has_key('BPI_DB_PORT'):
     DB_PORT = os.environ['BPI_DB_PORT']
-
-PROJECT_DIR = os.path.dirname(os.path.realpath(__file__))
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -72,11 +68,13 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+#    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
 #    'django_modalview',
     'jquery',
     'blog',
     'cookielaw',
+#    'django_uwsgi',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -88,6 +86,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+#    'raven.contrib.django.raven_compat',
 ]
 
 ROOT_URLCONF = 'przedszkole32.urls'
@@ -175,12 +174,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_URL = os.path.join(BASE_DIR, "static/")
-STATIC_ROOT = os.path.join(BASE_DIR, 'public', 'static')
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'public')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
-#    os.path.join(BASE_DIR, "public/static"),
+#    os.path.join(BASE_DIR, 'public', 'static'),
+#    os.path.join(DJ_PROJECT_DIR, 'static'),
 )
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "$project/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -190,3 +192,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 LOGIN_REDIRECT_URL = '/'
+
+# List of finder classes that know how to find static files in 
+# various locations. 
+STATICFILES_FINDERS = ( 
+    'django.contrib.staticfiles.finders.FileSystemFinder', 
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder', 
+#    'django.contrib.staticfiles.finders.DefaultStorageFinder', 
+) 
+STATIC_FINDERS= STATICFILES_FINDERS
