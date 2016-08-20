@@ -1,5 +1,6 @@
 {% extends 'blog/base.html' %}
 
+
 {% block content %}
     <div class="post">
         {% if post.published_date %}
@@ -20,8 +21,8 @@
             {% for document in post.documents.all %}
                 {% if document.thumbnail %}
                 <div class="col-sm-8 col-md-4">
-                    <!-- p>{{document.docfile.url}}</p class="thumbnail" -->
-
+                    <!-- p>{{document.docfile.url}}</p class="thumbnail"
+-->
 <a class="example-image-link thumbnail" data-title="Click the right half of the image to move forward." data-lightbox="example-set" href="{{document.docfile.url}}">
 <img class="example-image" alt="{{document.title}}" src="{{document.docfile.url}}">
 </a>
@@ -46,15 +47,15 @@
         </div>
         <p>{{ post.text|linebreaks }}</p>
         <hr>
+        <div class="comment">
         {% for comment in post.comments.all %}
           {% if user.is_authenticated or comment.approved_comment %}
-          <div class="comment">
             <div class="date">{{ comment.created_date }}
                 {% if user.is_authenticated and comment.author.id = user.id %}
                 {% if not comment.approved_comment %}
                   <a class="btn btn-default" href="{% url 'comment_approve' pk=comment.pk %}"><span class="glyphicon glyphicon-ok"></span></a>
                 {% endif %}
-                <a class="btn btn-default" href="{% url 'comment_edit' pk=comment.pk %}"  alt="edytuj"><span class="glyphicon glyphicon-pencil"></span></a>
+                <!-- <a class="btn btn-default" href="{% url 'comment_edit' pk=comment.pk %}"  alt="edytuj"><span class="glyphicon glyphicon-pencil"></span></a> -->
                 <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}" alt="usuń"><span class="glyphicon glyphicon-trash"></span></a>
                 {% endif %}
             </div>

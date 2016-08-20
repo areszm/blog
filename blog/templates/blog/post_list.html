@@ -3,17 +3,33 @@
 
 {% block content %}
     <div class="pagination">
+        <!--
         <span class="step-links">
             {% if posts.has_previous %}
-                <a href="?page={{ posts.previous_page_number }}">previous</a>
+                <a href="?page={{ posts.previous_page_number }}">poprzednia</a>
             {% endif %}
             <span class="current">
-            Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+            Strona {{ posts.number }} z {{ posts.paginator.num_pages }}.
             </span>
 
             {% if posts.has_next %}
-                <a href="?page={{ posts.next_page_number }}">next</a>
+                <a href="?page={{ posts.next_page_number }}">następna</a>
             {% endif %}
+        </span>
+        -->
+        <span class="step-links">[
+            {% if posts.has_previous %}
+                <a href="?page={{ posts.previous_page_number }}"><<</a>
+            {% endif %}
+            {% for post_nr in posts.paginator.page_range %}
+                {% if post_nr != posts.number %}<a href="?page={{ post_nr }}"> {{ post_nr }} </a>{% endif %}
+                {% if post_nr == posts.number %} {{ post_nr }} {% endif %}
+                {% if post_nr != posts.paginator.num_pages %},{% endif %}
+            {% endfor %}
+            {% if posts.has_next %}
+                <a href="?page={{ posts.next_page_number }}">>></a>
+            {% endif %}
+            ]
         </span>
     </div>
 
