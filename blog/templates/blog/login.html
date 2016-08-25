@@ -30,7 +30,7 @@
     {% else %}
       <p>Jesteś już zalogowany jako {{ user.username }}</p>
       <ul>
-        <li><a href="{% url 'blog:post_detail' %}">Strona główna</a></li>
+        <li><a href="{% url 'blog:post_list' %}">Strona główna</a></li>
       </ul>
     {% endif %}
 {% endblock content %}

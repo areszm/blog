@@ -56,6 +56,9 @@ SECRET_KEY = 'dosq1iq*$-6(uuo39e_hrqmf$j))+y%ia_!bnw7efzm9gn$9dx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+#SESSION_COOKIE_SECURE = True
+#CSRF_COOKIE_SECURE = True
+#SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 
 ALLOWED_HOSTS = []
 
@@ -193,11 +196,11 @@ MEDIA_URL = '/media/'
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 LOGIN_REDIRECT_URL = '/'
 
-# List of finder classes that know how to find static files in 
-# various locations. 
-STATICFILES_FINDERS = ( 
-    'django.contrib.staticfiles.finders.FileSystemFinder', 
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder', 
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder', 
-) 
+# List of finder classes that know how to find static files in
+# various locations.
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
 STATIC_FINDERS= STATICFILES_FINDERS

@@ -32,18 +32,59 @@ def get(request):
     return Post.objects.filter(**sort_params)
 
 def post_list(request):
-    grupa = request.GET.get('grupa')
+    #grupa = request.GET.get('grupa')
     #posts_list = Post.objects.filter(**filterargs).order_by('-published_date')
-    if grupa == '1':
-        posts_list = Post.objects.filter(published_date__lte=timezone.now(), grop_1 = True).order_by('-published_date')
-    elif grupa == '2':
-        posts_list = Post.objects.filter(published_date__lte=timezone.now(), grop_2 = True).order_by('-published_date')
-    elif grupa == '3':
-        posts_list = Post.objects.filter(published_date__lte=timezone.now(), grop_3 = True).order_by('-published_date')
-    elif grupa == '4':
-        posts_list = Post.objects.filter(published_date__lte=timezone.now(), grop_4 = True).order_by('-published_date')
-    else:
-        posts_list = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+    #if grupa == '1':
+    #    posts_list = Post.objects.filter(published_date__lte=timezone.now(), grop_1 = True).order_by('-published_date')
+    #elif grupa == '2':
+    #    posts_list = Post.objects.filter(published_date__lte=timezone.now(), grop_2 = True).order_by('-published_date')
+    #elif grupa == '3':
+    #    posts_list = Post.objects.filter(published_date__lte=timezone.now(), grop_3 = True).order_by('-published_date')
+    #elif grupa == '4':
+    #    posts_list = Post.objects.filter(published_date__lte=timezone.now(), grop_4 = True).order_by('-published_date')
+    #else:
+    posts_list = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+    paginator = Paginator(posts_list, 3) # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+
+    return render(request, 'blog/post_list.html', {'posts':posts})
+
+def post_list_grp1(request):
+    posts_list = Post.objects.filter(published_date__lte=timezone.now(), grop_1 = True).order_by('-published_date')
+    paginator = Paginator(posts_list, 3) # Show 25 contacts per page
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+
+    return render(request, 'blog/post_list.html', {'posts':posts})
+
+def post_list_grp2(request):
+    posts_list = Post.objects.filter(published_date__lte=timezone.now(), grop_2 = True).order_by('-published_date')
+    return post_list_grp(request, post_list)
+
+def post_list_grp3(request):
+    posts_list = Post.objects.filter(published_date__lte=timezone.now(), grop_3 = True).order_by('-published_date')
+    return post_list_grp(request, post_list)
+
+def post_list_grp4(request):
+    posts_list = Post.objects.filter(published_date__lte=timezone.now(), grop_4 = True).order_by('-published_date')
+    return post_list_grp(request, post_list)
+
+def post_list_grp5(request):
+    posts_list = Post.objects.filter(published_date__lte=timezone.now(), grop_5 = True).order_by('-published_date')
+    return post_list_grp(request, post_list)
+
+def post_list_grp(request, posts_list):
     paginator = Paginator(posts_list, 3) # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -253,6 +294,8 @@ def login_user(request):
             messages.success(request, u"Zostałeś zalogowany!")
             return HttpResponseRedirect(next_page)
             # return redirect(reverse('post_list'))
+        else:
+            messages.success(request, u"Nieudane logowanie!")
 
     kontekst = {'form': AuthenticationForm()}
     # return render(request, 'blog/login.html', { 'next_page':next_page }, content_type="application/xhtml+xml" , kontekst)

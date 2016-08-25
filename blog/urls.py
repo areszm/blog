@@ -7,6 +7,11 @@ from blog import views
 
 urlpatterns = [
     url(r'^$', views.post_list, name='post_list'),
+    url(r'^group/1/$', views.post_list_grp1, name='post_list_grp1'),
+    url(r'^group/2/$', views.post_list_grp2, name='post_list_grp2'),
+    url(r'^group/3/$', views.post_list_grp3, name='post_list_grp3'),
+    url(r'^group/4/$', views.post_list_grp4, name='post_list_grp4'),
+    url(r'^group/5/$', views.post_list_grp5, name='post_list_grp5'),
     #url(r'^newest$', views.post_list, name='post_list'),
     #url(r'^oldest$', views.post_list_rev, name='post_list_rev'),
     url(r'^index$', views.index, name='index'),

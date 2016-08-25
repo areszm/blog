@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% load static from staticfiles %}
 {% load tags %}
+
 <!--
 {% load cookielaw_tags %}
 {% cookielaw_banner %}
@@ -25,7 +26,7 @@
         {% block extrahead %}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"  type="text/javascript"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-        
+
         <!-- script type="text/javascript" src="{% static 'fancybox/jquery.fancybox.pack.js' %}"></script -->
         <script type="text/javascript" src="{% static 'jquery_lightbox/js/lightbox.js' %}"></script>
         {% endblock %}
@@ -43,7 +44,7 @@ $(document).ready( function() {
   } );
 } );
 </script>
- 
+
 <div class="pagination">
 <span class="step-links">
 <span class="current"> Page of . </span>
@@ -94,11 +95,11 @@ $(document).ready( function() {
           <a class="dropdown-toggle glyphicon glyphicon-th-list" data-toggle="dropdown" href="#"><span class="caret"></span> </a>
           <ul class="dropdown-menu">
             <li><a href="{% url 'post_list' %}">Dla wszystkich <span class="glyphicon glyphicon-ok"></span></a></li>
-            <li><a href="{% url 'post_list' %}{% if request.GET %}?{{ request.GET.urlencode }}&grupa=1{% else %}?grupa=1{% endif %}">Grupa 1</a></li>
-            <li><a href="{% url 'post_list' %}{% if request.GET %}?{{ request.GET.urlencode }}&grupa=2{% else %}?grupa=2{% endif %}">Grupa 2</a></li>
-            <li><a href="#">Grupa 3</a></li>
-            <li><a href="#">Grupa 4</a></li>
-            <li><a href="#">Grupa 5</a></li>
+            <li><a href="{% url 'post_list_grp1' %}">Grupa 1</a></li>
+            <li><a href="{% url 'post_list_grp2' %}">Grupa 2</a></li>
+            <li><a href="{% url 'post_list_grp3' %}">Grupa 3</a></li>
+            <li><a href="{% url 'post_list_grp4' %}">Grupa 4</a></li>
+            <li><a href="{% url 'post_list_grp5' %}">Grupa 5</a></li>
           </ul>
         </li>
         <li class="{% active request '^/$' %}">
@@ -113,13 +114,16 @@ $(document).ready( function() {
         <li><a href="#">Page 3</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li>
           {% if user.is_authenticated %}
-              {{ user.username }} <a href="{% url 'logout' %}?next_page={{request.path}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+            <li><a href="#"><span class="blog-nav-item">{{ user.username }}</span></a></li>
+            <li>
+               <a href="{% url 'logout' %}?next_page={{request.path}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+            </li>
           {% else %}
+          <li>
               <a href="{% url 'login' %}{% if request.GET %}?{{ request.GET.urlencode }}&next_page={{request.path}}{% else %}?next_page={{request.path}}{% endif %}"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+          </li>
           {% endif %}
-        </li>
       </ul>
     </div>
   </div>
@@ -140,7 +144,7 @@ $(document).ready( function() {
                 var price = $('<p>From $399,99</p>');
                 $('.vacation').append(price);
                 console.log("set price" . price);
-                
+
             });
             </script>
             <ul>
@@ -172,7 +176,7 @@ $(document).ready(function(){
         console.log("delay")
         $( "#id_messages" ).delay(2000).fadeOut( "slow" );
     })();
-    
+
 });
 </script>
         {% endif %}
